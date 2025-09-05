@@ -1,0 +1,28 @@
+services:
+  auth-db:
+    image: postgres:latest
+    container_name: project_template_auth_db
+    hostname: auth-db
+    environment:
+      POSTGRES_USER: ${AUTH_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${AUTH_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${AUTH_POSTGRES_DBNAME}
+      TZ: Europe/Sofia
+    ports:
+      - "5450:5432"
+    volumes:
+      - auth-db-data:/var/lib/postgresql/data
+    networks:
+      - project_template_network
+
+
+
+volumes:
+  auth-db-data:
+    driver: local
+    name: auth-db-data
+
+networks:
+  project_template_network:
+    driver: bridge
+    name: project_template_network
