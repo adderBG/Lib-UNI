@@ -77,7 +77,6 @@ def search_books():
         search_response.raise_for_status()
         search_data = search_response.json()
 
-        # Ако има поне един резултат, вземаме author_key
         if search_data.get("docs"):
             first_author_key = search_data["docs"][0].get("author_key", [None])[0]
             if first_author_key:
@@ -130,7 +129,6 @@ def author_books(author_key):
         response.raise_for_status()
         data = response.json()
 
-        # Вземаме само основна информация от entries
         clean_entries = []
         for entry in data.get("entries", []):
             clean_entries.append({
@@ -150,7 +148,6 @@ def author_books(author_key):
 @auth_bp.route('/author/<author_key>', methods=['GET'])
 def author_details(author_key):
     try:
-        # 1. Основни данни от author.json
         url = f"https://openlibrary.org/authors/{author_key}.json"
         response = requests.get(url)
         response.raise_for_status()
@@ -158,7 +155,6 @@ def author_details(author_key):
 
         author_name = data.get("name")
 
-        # 2. Търсene na резюме по име 
         search_url = "https://openlibrary.org/search/authors.json"
         search_response = requests.get(search_url, params={"q": author_name})
         search_response.raise_for_status()
